@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:lifepets/models/pet.model.dart';
 import 'package:lifepets/screens/form_pet_screen.dart';
 import 'package:lifepets/screens/pet/perfil_pet_screen.dart';
+import 'package:lifepets/service/pet_service.dart';
 
 
 /// sempre perguntar se a tela vai ter alguma alteração em tempo de execução
 /// se não tiver deve ser stateless, caso contrário statefull
 class HomeScreen extends StatelessWidget {
+
+  PetService service = PetService();
+  List<dynamic> pets = [];
+
+  HomeScreen(){
+    _getAllPets();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +66,7 @@ class HomeScreen extends StatelessWidget {
             children: <Widget>[
               /// Filho 01
               Hero(
-                tag: pets[index].id,
+                tag: pets[index].id!,
                 child: Container(
                     width: double.infinity,
                     height: 250,
@@ -68,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                             Radius.circular(20)
                         ),
                         image: DecorationImage(
-                          image: AssetImage(pets[index].imageUrl),
+                          image: AssetImage(pets[index].imageUrl!),
                           fit: BoxFit.cover,
                         )
                     )
@@ -83,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      pets[index].nome,
+                      pets[index].nome!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 24,
@@ -97,7 +104,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.fromLTRB(12, 12, 40, 0),
                 child: Text(
-                  pets[index].descricao,
+                  pets[index].descricao!,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,
@@ -110,5 +117,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       );
+    }
+    /// Não confunda esse método com o getAllPets do PetServices
+    void _getAllPets(){
+    List list = service.getAllPets();
+    pets = list;
     }
   }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lifepets/models/pet.model.dart';
+import 'package:lifepets/service/pet_service.dart';
+
+import 'home.screen.dart';
 
 class FormPetScreen extends StatefulWidget {
 
@@ -9,6 +13,16 @@ class FormPetScreen extends StatefulWidget {
 class _FormPetScreenState extends State<FormPetScreen> {
   String corPet = 'Branco';
   String sexoPet = 'Macho';
+
+  final _nomeController = TextEditingController();
+  final _bioController = TextEditingController();
+  final _idadeController = TextEditingController();
+  final _descricaoController = TextEditingController();
+
+  /// Instanciando PetService
+  PetService service = PetService();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +37,19 @@ class _FormPetScreenState extends State<FormPetScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
+                  controller: _nomeController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(labelText: "Nome do pet"),
                 ),
+
                 TextFormField(
+                  controller: _bioController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(labelText: "Bio")
                 ),
+
                 TextFormField(
+                  controller: _idadeController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: "Idade")
                 ),
@@ -53,6 +72,7 @@ class _FormPetScreenState extends State<FormPetScreen> {
                 ),
 
                 TextFormField(
+                  controller: _descricaoController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(labelText: "Descrição")
                 ),
@@ -73,13 +93,29 @@ class _FormPetScreenState extends State<FormPetScreen> {
                         );
                     }).toList(),
                 ),
+
                 Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 20),
                   child: Container(
                     width: double.infinity,
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Pet newPet = Pet(
+                          nome: _nomeController.text,
+                          bio: _bioController.text,
+                          idade: int.parse(_idadeController.text),
+                          sexo: sexoPet,
+                          descricao: _descricaoController.text,
+                          cor: corPet
+                        );
+                        service.addPet(newPet);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => HomeScreen(),
+                          )
+                        );
+                      },
                       child: Text(
                         "Cadastrar",
                         style: TextStyle(

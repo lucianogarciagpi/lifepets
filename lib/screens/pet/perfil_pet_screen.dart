@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifepets/models/pet.model.dart';
+import 'package:lifepets/widgets/custom_navbar.dart';
 
 /// sempre perguntar se a tela vai ter alguma alteração em tempo de execução
 /// se não tiver deve ser stateless, caso contrário statefull
@@ -15,38 +16,40 @@ class PerfilPetScreen extends StatelessWidget {
 
   /// Método _cartaoInfoPet
   Widget _cartaoInfoPet(String label, String informacao){
-    return Container(
-      margin: EdgeInsets.all(10),
-      width: 100,
-      decoration: BoxDecoration(
-        color: Color(0xfff8f2f7),
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            label,
-            style: TextStyle(
-              fontFamily: "Montserrat",
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.red,
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.all(10),
+        width: 100,
+        decoration: BoxDecoration(
+          color: Color(0xfff8f2f7),
+          borderRadius: BorderRadius.circular(20)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: "Montserrat",
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.red,
+              ),
             ),
-          ),
 
-          SizedBox(height: 8),
+            SizedBox(height: 8),
 
-          Text(
-            informacao,
-            style: TextStyle(
-              fontFamily: "Montserrat",
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              //color: Colors.red,
+            Text(
+              informacao,
+              style: TextStyle(
+                fontFamily: "Montserrat",
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                //color: Colors.red,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -63,14 +66,14 @@ class PerfilPetScreen extends StatelessWidget {
                 Hero(
                   /// precisamos receber as informações por parametros
                   /// do card do pet que esta na tela homeScreen
-                    tag: pet?.id,
+                    tag: (int) => pet!.id,
                     child: Container(
                       width: double.infinity, // largura do container
                       height: 350, // altura
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
-                            pet?.imageUrl,
+                            pet!.imageUrl.toString(),
                           ),
                           fit: BoxFit.cover
                         ),
@@ -96,7 +99,8 @@ class PerfilPetScreen extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Text(
-                    pet?.nome, style: TextStyle(
+                    pet!.nome.toString(),
+                    style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 24,
                       fontWeight: FontWeight.bold
@@ -110,7 +114,8 @@ class PerfilPetScreen extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Text(
-                    pet?.descricao, style: TextStyle(
+                    pet!.descricao.toString(),
+                    style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,
                       color: Colors.grey,
@@ -135,7 +140,7 @@ class PerfilPetScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40, vertical: 25),
               child: Text(
-                pet!.bio,
+                pet!.bio.toString(),
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
@@ -149,6 +154,13 @@ class PerfilPetScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        child: Icon(Icons.edit),
+        backgroundColor: Colors.redAccent,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: CustomNavBar(paginaAberta: 0,pet: pet!),
     );
   }
 }
